@@ -623,17 +623,19 @@ module ActiveDirectory
           @sid.to_s
       end
 
-		def method_missing(name, args = []) # :nodoc:
-			name = name.to_s.downcase
+    class ActiveDirectory::Base
+      def method_missing(name, args = []) # :nodoc:
+        str_name = name.to_s.downcase
 
-			return set_attr(name.chop, args) if name[-1] == '='
+        return set_attr(str_name.chop, args) if str_name[-1] == '='
 
-			if valid_attribute? name.to_sym
-				get_attr(name)
-			else
-				super
-			end
-		end
+        if valid_attribute? str_name.to_sym
+          get_attr(str_name)
+        else
+          super
+        end
+      end
+    end
 
 	end
 end
